@@ -211,11 +211,12 @@ function App() {
               停止
             </button>
           )}
-          <button onClick={() => callPowerAutomate("suggest")} className="px-4 py-2 bg-indigo-100 rounded">
-            AI意見案
+          {/* ボタンに disabled とテキストの条件分岐を追加 */}
+          <button onClick={() => callPowerAutomate("suggest")} disabled={loadingAI} className="px-4 py-2 bg-indigo-100 rounded disabled:opacity-50">
+            {loadingAI ? "作成中..." : "AI意見案"}
           </button>
-          <button onClick={() => callPowerAutomate("minutes")} className="px-4 py-2 bg-emerald-100 rounded">
-            議事録作成
+          <button onClick={() => callPowerAutomate("minutes")} disabled={loadingMinutes} className="px-4 py-2 bg-emerald-100 rounded disabled:opacity-50">
+            {loadingMinutes ? "作成中..." : "議事録作成"}
           </button>
           <button onClick={() => {
             setFinalChunks([]); setInterim(""); setPreInfo("");
@@ -230,7 +231,12 @@ function App() {
       <section>
         <h2 className="font-bold text-sm mb-2">意見案</h2>
         <div className="bg-white p-4 rounded shadow">
-          {suggestions.map((s, i) => <div key={i}>{s}</div>)}
+          {/* loadingAI が true のときに作成中のテキストを表示 */}
+          {loadingAI ? (
+            <div className="text-slate-500 animate-pulse">作成中...</div>
+          ) : (
+            suggestions.map((s, i) => <div key={i}>{s}</div>)
+          )}
         </div>
       </section>
 
@@ -257,7 +263,12 @@ function App() {
       <section>
         <h2 className="font-bold text-sm mb-2">議事録</h2>
         <div className="bg-emerald-50 p-4 rounded min-h-[150px] whitespace-pre-wrap">
-          {minutes || "未作成"}
+          {/* loadingMinutes が true のときに作成中のテキストを表示 */}
+          {loadingMinutes ? (
+            <div className="text-slate-500 animate-pulse">作成中...</div>
+          ) : (
+            minutes || "未作成"
+          )}
         </div>
       </section>
     </div>

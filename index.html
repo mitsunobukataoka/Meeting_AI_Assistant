@@ -139,6 +139,20 @@ function App() {
         if (finals.length) setFinalChunks(p => [...p, ...finals]);
         setInterim(inter.trim());
       };
+      // --- ここに追加: エラーハンドリング ---
+      r.onerror = (event) => {
+        console.error("Speech Recognition Error:", event.error);
+        
+        // ネットワークエラーや音声入力なしで止まった場合に通知
+        if (event.error === 'network') {
+          setToastMsg("ネットワークが不安定です。再接続を試みます...");
+        }
+        if (event.error === 'no-speech') {
+          // しばらく無音が続くとこのエラーが出ることがあります
+          console.warn("無音状態が続いています");
+        }
+      };
+      // ------------------------------------
       r.onend = () => { if (!manualStopRef.current) try { r.start(); } catch {} };
       recognitionRef.current = r;
     }

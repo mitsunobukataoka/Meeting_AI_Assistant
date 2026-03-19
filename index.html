@@ -292,7 +292,11 @@ function App() {
           <section className="flex flex-col h-full">
             <div className="flex justify-between items-center mb-2">
               <h2 className="font-bold text-sm text-slate-600">AI意見案</h2>
-              <button onClick={() => callPowerAutomate("suggest")} disabled={loadingAI || isRecording} className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded hover:bg-indigo-200 disabled:opacity-50 transition">
+              <button 
+                onClick={() => callPowerAutomate("suggest")} 
+                disabled={loadingAI} // isRecording を削除
+                className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded hover:bg-indigo-200 disabled:opacity-50 transition"
+              >
                 {loadingAI ? "生成中..." : "案を更新"}
               </button>
             </div>
